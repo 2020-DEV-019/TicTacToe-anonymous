@@ -98,4 +98,47 @@ class TicTacToeTests: XCTestCase {
         let isWon = (X_board & pattern) == pattern
         XCTAssertTrue(isWon)
     }
+    
+    func testVerticalRightGame() {
+        /*
+        Given a board sequence, verify if a move in slot 6 by X is winning using the game class object
+        Board: - - -        - - -       - - -       - - -       - - X
+               - - -    >   - - -   >   - - X   >   - O X   >   - O X   > X win
+               - - X        - O X       - O X       - O X       - O X
+        
+        The game object should return the .won game state
+        */
+        let game = Game()
+
+        _ = game.play(0)
+        _ = game.play(1)
+        _ = game.play(3)
+        _ = game.play(4)
+        let state = game.play(6)
+        
+        XCTAssertTrue(state == Game.GameState.won(winner: 0, set: .vertical_2))
+    }
+    
+    func testUnsolvableGame() {
+        /*
+        Given that draw board sequence, verify if the game object returns the proper state
+        Board: - - -        - - -       - - -       - - -                O X O
+               - - -    >   - - -   >   - - -   >   - - O   >   ...   >  X O O   > draw
+               - - X        - O X       X O X       X O X                X O X
+        
+        The game object should return the .draw game state
+        */
+        let game = Game()
+        _ = game.play(0)
+        _ = game.play(1)
+        _ = game.play(2)
+        _ = game.play(3)
+        _ = game.play(6)
+        _ = game.play(4)
+        _ = game.play(5)
+        _ = game.play(7)
+        let state = game.play(8)
+        
+        XCTAssertTrue(state == Game.GameState.draw)
+    }
 }
