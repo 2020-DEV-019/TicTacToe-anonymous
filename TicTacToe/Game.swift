@@ -34,15 +34,36 @@ class Game {
     }
     
     func play(_ slot: Int) -> GameState {
+        if canMove(slot) {
+            if let result = compute(slot) {
+                if case .unsolvable = result {
+                    return .draw
+                }
+                return .won(winner: pturn, set: result)
+            }
+            
+            turn()
+        }
+        
         return .running
     }
     
     func canMove(_ slot: Int) -> Bool {
-        return false
+        let p1 = board & 0b111111111
+        let p2 = (board >> 9) & 0b111111111
+        return (p1 | (1 << slot)) > p1 && (p2 | (1 << slot)) > p2
     }
     
-    func compute(_ board: Int, slot: Int) -> WinningSet? {
-        return nil
+    func compute(_ slot: Int) -> WinningSet? {
+        board |= (1 << slot) << (9 * pturn)
+        let p1 = board & 0b111111111
+        let p2 = (board >> 9) & 0b111111111
+        
+        if let set = WinningSet(rawValue: p1 | p2), set == .unsolvable {
+            return set
+        }
+        
+        return WinningSet(rawValue: (board >> (9 * pturn)) & 0b111111111)
     }
     
     func turn() {
