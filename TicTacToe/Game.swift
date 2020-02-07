@@ -4,14 +4,25 @@ class Game {
     var pturn = 0
     var board = 0
     
-    enum GameState {
+    enum GameState: Equatable {
         case running
         case won(winner: Int, set: WinningSet)
         case draw
+        
+        static func ==(lhs: GameState, rhs: GameState) -> Bool {
+            switch (lhs, rhs) {
+            case (.running, .running), (.draw, .draw):
+                return true
+            case (.won(let lw, let ls), .won(let rw, let rs)):
+                return lw == rw && ls == rs
+            default:
+                return false
+            }
+        }
     }
     
     enum WinningSet: Int {
-        case unsolvable
+        case unsolvable     = 0b111111111
         case horizontal_0   = 0b111000000
         case horizontal_1   = 0b000111000
         case horizontal_2   = 0b000000111
