@@ -22,7 +22,7 @@ class Game {
         }
     }
     
-    enum WinningSet: Int {
+    enum WinningSet: Int, CaseIterable {
         case unsolvable     = 0b111111111
         case horizontal_0   = 0b111000000
         case horizontal_1   = 0b000111000
@@ -69,7 +69,13 @@ class Game {
             return set
         }
         
-        return WinningSet(rawValue: (board >> (9 * pturn)) & 0b111111111)
+        for testSet in WinningSet.allCases {
+            if let set = WinningSet(rawValue: (board >> (9 * pturn)) & testSet.rawValue) {
+                return set
+            }
+        }
+        
+        return nil
     }
     
     func turn() {
