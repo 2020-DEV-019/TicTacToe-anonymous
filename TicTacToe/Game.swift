@@ -3,6 +3,7 @@ import Foundation
 class Game {
     var pturn = 0
     var board = 0
+    var state: GameState = .running
     
     enum GameState: Equatable {
         case running
@@ -33,19 +34,24 @@ class Game {
         case diagonal_1     = 0b001010100
     }
     
-    func play(_ slot: Int) -> GameState {
+    @discardableResult
+    func play(_ slot: Int) -> Bool {
         if canMove(slot) {
             if let result = compute(slot) {
                 if case .unsolvable = result {
-                    return .draw
+                    state = .draw
+                } else {
+                    state = .won(winner: pturn, set: result)
                 }
-                return .won(winner: pturn, set: result)
+            } else {
+                turn()
             }
             
-            turn()
+            return true
         }
         
-        return .running
+        state = .running
+        return false
     }
     
     func canMove(_ slot: Int) -> Bool {

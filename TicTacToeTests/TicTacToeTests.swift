@@ -110,13 +110,13 @@ class TicTacToeTests: XCTestCase {
         */
         let game = Game()
 
-        _ = game.play(0)
-        _ = game.play(1)
-        _ = game.play(3)
-        _ = game.play(4)
-        let state = game.play(6)
+        game.play(0)
+        game.play(1)
+        game.play(3)
+        game.play(4)
+        game.play(6)
         
-        XCTAssertTrue(state == Game.GameState.won(winner: 0, set: .vertical_2))
+        XCTAssertTrue(game.state == Game.GameState.won(winner: 0, set: .vertical_2))
     }
     
     func testUnsolvableGame() {
@@ -129,17 +129,17 @@ class TicTacToeTests: XCTestCase {
         The game object should return the .draw game state
         */
         let game = Game()
-        _ = game.play(0)
-        _ = game.play(1)
-        _ = game.play(2)
-        _ = game.play(3)
-        _ = game.play(6)
-        _ = game.play(4)
-        _ = game.play(5)
-        _ = game.play(7)
-        let state = game.play(8)
+        game.play(0)
+        game.play(1)
+        game.play(2)
+        game.play(3)
+        game.play(6)
+        game.play(4)
+        game.play(5)
+        game.play(7)
+        game.play(8)
         
-        XCTAssertTrue(state == Game.GameState.draw)
+        XCTAssertTrue(game.state == Game.GameState.draw)
     }
     
     func testUnauthMoveGame() {
@@ -148,12 +148,12 @@ class TicTacToeTests: XCTestCase {
         The game object should return the .running game state and game.pturn should stay the same if many attempts are done on a played slot
         */
         let game = Game()
-        _ = game.play(0) //pturn = 1 after successfully played slot 0
-        _ = game.play(1) //pturn = 0 after successfully played slot 1
-        _ = game.play(1) //pturn remains 0
-        _ = game.play(1) //pturn remains 0
-        _ = game.play(1) //pturn remains 0
-        _ = game.play(1) //pturn remains 0
+        game.play(0) //pturn = 1 after successfully played slot 0
+        game.play(1) //pturn = 0 after successfully played slot 1
+        game.play(1) //pturn remains 0
+        game.play(1) //pturn remains 0
+        game.play(1) //pturn remains 0
+        game.play(1) //pturn remains 0
         
         XCTAssertTrue(game.pturn == 0)
     }
