@@ -48,4 +48,35 @@ class TicTacToeTests: XCTestCase {
         XCTAssertTrue(X_rev == X)
         XCTAssertTrue(O_rev == O)
     }
+    
+    func testAuthorizedAndUnauthorizedMove() {
+        /*
+         Given a board sequence, verify if a move is authorized to play (not already binary encoded)
+         Board: - - -
+                - - -
+                - - X
+         
+         Player O play 0 -> should be unauthorized
+         Player O play 1 -> should be authorized
+         
+         To know how to recognize an authorized move, we can compare the value of the current board and the result of "board OR slot"
+         */
+        
+        let board = 0b000000000000000001
+        let X_board = board & 0b111111111 //Filtered board for X slots
+        let O_board = board >> 9 //Filtered board for O slots
+        
+        //The slot required to move on is equal to 1 shifted by slot
+        var O_move = 1 << 0
+        
+        //Verify if the slot is free of X or O, meaning a OR operator should increase the board value for each separated board (X's and O's)
+        let unauthorized_move = (X_board | O_move) > X_board && (O_board | O_move) > O_board
+        
+        //Verify that moving on the slot 0 is not possible
+        XCTAssertFalse(unauthorized_move)
+        
+        O_move = 1 << 1
+        let authorized_move = (X_board | O_move) > X_board && (O_board | O_move) > O_board
+        XCTAssertTrue(authorized_move)
+    }
 }
