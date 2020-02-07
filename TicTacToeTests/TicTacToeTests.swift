@@ -141,4 +141,20 @@ class TicTacToeTests: XCTestCase {
         
         XCTAssertTrue(state == Game.GameState.draw)
     }
+    
+    func testUnauthMoveGame() {
+        /*
+        Verify if the game object prevents playing on an played slot
+        The game object should return the .running game state and game.pturn should stay the same if many attempts are done on a played slot
+        */
+        let game = Game()
+        _ = game.play(0) //pturn = 1 after successfully played slot 0
+        _ = game.play(1) //pturn = 0 after successfully played slot 1
+        _ = game.play(1) //pturn remains 0
+        _ = game.play(1) //pturn remains 0
+        _ = game.play(1) //pturn remains 0
+        _ = game.play(1) //pturn remains 0
+        
+        XCTAssertTrue(game.pturn == 0)
+    }
 }
