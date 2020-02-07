@@ -17,6 +17,9 @@ class GameViewController: UIViewController {
         reloadGame()
     }
 
+    /*
+    Remove IB's templating values
+    */
     func initUI() {
         for slot in slots {
             let gesture = UITapGestureRecognizer(target: self, action: #selector(tap(gesture:)))
@@ -24,6 +27,9 @@ class GameViewController: UIViewController {
         }
     }
     
+    /*
+    Reload the screen with initialized values
+    */
     func reloadGame() {
         game = Game()
         currentTurn = 0
@@ -34,6 +40,10 @@ class GameViewController: UIViewController {
         }
     }
     
+    /*
+    Game UI logic. Plays a slot if possible, then update pictures according to the current turn and the new one.
+    If draw or win, shows a popup with a button to reset the game
+    */
     func play(slot: Int, input: UIImageView) {
         if game.play(slot) {
             assignPicture(imageView: input, turn: currentTurn)

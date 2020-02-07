@@ -34,6 +34,9 @@ class Game {
         case diagonal_1     = 0b001010100
     }
     
+    /*
+    Game logic. Returns a Bool value either a move has been done or not. Updates the turn and the state of the game according to the mapping of the resulting computation.
+    */
     @discardableResult
     func play(_ slot: Int) -> Bool {
         if canMove(slot) {
@@ -54,12 +57,18 @@ class Game {
         return false
     }
     
+    /*
+    Verify if a move on the slot passed as parameter is authorized or not
+    */
     func canMove(_ slot: Int) -> Bool {
         let p1 = board & 0b111111111
         let p2 = (board >> 9) & 0b111111111
         return (p1 | (1 << slot)) > p1 && (p2 | (1 << slot)) > p2
     }
     
+    /*
+    Assign the played slot to the board and returns a set if applicable, nil otherwise
+    */
     func compute(_ slot: Int) -> WinningSet? {
         board |= (1 << slot) << (9 * pturn)
         let p1 = board & 0b111111111
@@ -78,6 +87,9 @@ class Game {
         return nil
     }
     
+    /*
+    Toggles player turns
+    */
     func turn() {
         pturn = (pturn + 1) % 2
     }
