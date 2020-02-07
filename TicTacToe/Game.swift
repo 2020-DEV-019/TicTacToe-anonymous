@@ -74,14 +74,14 @@ class Game {
         let p1 = board & 0b111111111
         let p2 = (board >> 9) & 0b111111111
         
-        if let set = WinningSet(rawValue: p1 | p2), set == .unsolvable {
-            return set
-        }
-        
         for testSet in WinningSet.allCases {
             if let set = WinningSet(rawValue: (board >> (9 * pturn)) & testSet.rawValue) {
                 return set
             }
+        }
+        
+        if let set = WinningSet(rawValue: p1 | p2), set == .unsolvable {
+            return set
         }
         
         return nil
