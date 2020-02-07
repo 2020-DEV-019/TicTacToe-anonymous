@@ -79,4 +79,23 @@ class TicTacToeTests: XCTestCase {
         let authorized_move = (X_board | O_move) > X_board && (O_board | O_move) > O_board
         XCTAssertTrue(authorized_move)
     }
+    
+    func testVerticalRight() {
+        /*
+        Given a board sequence, verify if a move in slot 6 by X is winning
+        Board: - - -        - - -       - - -       - - -       - - X
+               - - -    >   - - -   >   - - X   >   - O X   >   - O X   > X win
+               - - X        - O X       - O X       - O X       - O X
+        
+        To know verify the winning value, we use a AND operator on X's board and the vertical right set represented by 001001001
+        */
+        
+        let turn = 0 //Meaning its X turn
+        let board = 0b000010010001001001 //Meaning the slot played by X was successfully encoded
+        let X_board = (board >> (9 * turn)) & 0b111111111 //9 * turn to shift the board by 9 bits if its O's turn
+        let pattern = 0b001001001 //Vertical right alignment
+        
+        let isWon = (X_board & pattern) == pattern
+        XCTAssertTrue(isWon)
+    }
 }
